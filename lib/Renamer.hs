@@ -9,12 +9,11 @@ data Args = Args { target :: String,
                  } deriving (Eq, Show)
 
 argValues :: [String] -> Either String Args
-argValues args = if length args < 3
-                 then Left "Incorrect arguments: <target> <substitution> ... <files>"
-                 else Right $ Args { target = args !! 0,
-                                     substitution = args !! 1,
-                                     fileNames = drop 2 args
-                                   }
+argValues (t:s:fs) = Right $ Args { target = t,
+                                    substitution = s,
+                                    fileNames = fs
+                                  }
+argValues _ = Left "Incorrect arguments: <target> <substitution> ... <files>"
 
 newPaths :: Args -> [FilePath]
 newPaths args = fmap subPath $ fileNames args
