@@ -24,7 +24,7 @@ spec = do
                           target = "image_",
                           substitution = "vacation_img_"
                         }
-        (matchedPaths paths args) `shouldBe` ["image_1.png", "image_2.png"]
+        (matchedPaths args paths) `shouldBe` ["image_1.png", "image_2.png"]
 
     describe "Substitution to generate new paths" $ do
        it "returns a list of all paths with s/target/substitution/g" $ do
@@ -33,7 +33,7 @@ spec = do
                             target = "image_",
                             substitution = "vacation_img_"
                           }
-         (newPaths paths args) `shouldBe` ["vacation_img_1.png", "vacation_img_2.png"]
+         (newPaths args paths) `shouldBe` ["vacation_img_1.png", "vacation_img_2.png"]
 
     describe "(Old, New) path pairs" $ do
       it "returns pairs of the old (matching) paths and the new (substituted) paths" $ do
@@ -42,6 +42,6 @@ spec = do
                           target = "image_",
                           substitution = "vacation_img_"
                         }
-        (pathNamePairs paths args) `shouldBe`
+        (pathNamePairs args paths) `shouldBe`
           [("image_1.png", "vacation_img_1.png"),
            ("image_2.png", "vacation_img_2.png")]

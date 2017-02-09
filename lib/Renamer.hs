@@ -18,16 +18,16 @@ argValues args = if length args /= 3
                                      substitution = args !! 2
                                    }
 
-matchedPaths :: [FilePath] -> Args -> [FilePath]
-matchedPaths paths args = filter matches paths
+matchedPaths :: Args -> [FilePath] -> [FilePath]
+matchedPaths args = filter matches
   where matches = Glob.match (Glob.compile $ fileGlob args)
 
-newPaths :: [FilePath] -> Args -> [FilePath]
-newPaths paths args = fmap subPath paths
+newPaths :: Args -> [FilePath] -> [FilePath]
+newPaths args = fmap subPath
   where subPath orig = Rx.subRegex (Rx.mkRegex $ target args)
                                    orig
                                    (substitution args)
 
-pathNamePairs :: [FilePath] -> Args -> [(FilePath, FilePath)]
-pathNamePairs paths args = zip oldPaths (newPaths oldPaths args)
-  where oldPaths = matchedPaths paths args
+pathNamePairs :: Args -> [FilePath] -> [(FilePath, FilePath)]
+pathNamePairs args paths = zip oldPaths (newPaths args oldPaths)
+  where oldPaths = matchedPaths args paths
